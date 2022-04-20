@@ -73,7 +73,7 @@ const TodoContainer = () => {
                     <CreateContact />
                 </TabPanel>
                 <TabPanel value={value} index={1} dir={theme.direction}>
-                    <ViewAllContact />
+                    <ViewAllContact setValue={setValue} />
                 </TabPanel>
             </Box>
 

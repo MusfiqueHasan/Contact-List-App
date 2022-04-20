@@ -1,32 +1,24 @@
 import { Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useEffect, useState } from 'react';
-import { IoIosPaper, } from "react-icons/io";
-import { useSelector } from 'react-redux';
+import { IoIosPaper, IoIosTrash } from "react-icons/io";
+import { useSelector, useDispatch } from 'react-redux';
 import { getAllContact } from '../APIService/Api';
+import { deleteContact, getContact, singleContact } from '../redux/actions/contactAction';
+import { contactType, IContactState } from '../redux/types';
 
-const ViewAllContact = () => {
+interface setValueType {
+    setValue: (index: number) => void,
+}
+const ViewAllContact = ({ setValue }: setValueType) => {
 
-    const allContacts: any = useSelector((state: any) => state)
+    const dispatch = useDispatch()
+    const allContacts = useSelector((state: any) => state.contact.users)
     console.log(allContacts);
-
-
-    // const [allContacts, setAllContacts] = useState<IContact[]>([])
-
     useEffect(() => {
-        console.log('data');
-    }, [allContacts])
-    // useEffect(() => {
-    //     getAllContact()
-    //         .then(res => {
-    //             if (res[0]) {
-    //                 console.log(res[1]);
-    //                 res[1] ? setAllContacts(res[1]) : setAllContacts([])
-    //             } else {
-    //                 console.log(res[1]);
-    //             }
-    //         })
-    // }, [])
+        dispatch(getContact())
+    }, [])
+
 
     return (
         <Grid container spacing={2}>
@@ -48,7 +40,7 @@ const ViewAllContact = () => {
                             </Box>
                         </Grid>
 
-                        <Grid item md={12}>
+                        <Grid item xs={12} md={12} lg={12}>
                             <Paper elevation={2} >
                                 <TableContainer component={Paper}>
                                     <Table aria-label="simple table" size='small'>
@@ -61,11 +53,9 @@ const ViewAllContact = () => {
                                                 <TableCell style={{ color: 'white', fontSize: 12 }} align="right"><b>Description</b></TableCell>
                                             </TableRow>
                                         </TableHead>
-
-
                                         <TableBody>
                                             {
-                                                allContacts?.map(contact => {
+                                                allContacts?.map((contact: IContact) => {
                                                     return (
                                                         <TableRow hover >
                                                             <TableCell component="th" scope="row"
@@ -73,12 +63,22 @@ const ViewAllContact = () => {
                                                             >
                                                                 <Tooltip title="Manage Contact">
                                                                     <Button
-                                                                        // onClick={() => {
-                                                                        //     setSendedContact(contact);
-                                                                        //     changeView(0);
-                                                                        // }}
+                                                                        onClick={() => {
+                                                                            dispatch(singleContact(contact?._id))
+                                                                            setValue(0)
+                                                                        }}
                                                                         variant="contained" color="primary" size='small'>
                                                                         <IoIosPaper />
+                                                                    </Button>
+                                                                </Tooltip>
+                                                                <Tooltip title="Manage Contact">
+                                                                    <Button
+                                                                        onClick={() => {
+                                                                            dispatch(deleteContact(contact?._id))
+                                                                        }}
+                                                                        sx={{ ml: 1 }}
+                                                                        variant="contained" color="error" size='small'>
+                                                                        <IoIosTrash />
                                                                     </Button>
                                                                 </Tooltip>
 

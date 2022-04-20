@@ -5,8 +5,8 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { useDispatch } from 'react-redux';
-import { contact } from '../redux/actions/contactAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact, updateContact } from '../redux/actions/contactAction';
 
 const viewModeView = "VIEW"
 const viewModeNew = "NEW"
@@ -28,8 +28,11 @@ const CreatecontactData = () => {
     const [contactData, setcontactData] = useState<IContact>(initialcontactData);
 
     const dispatch = useDispatch()
+    const singleContact = useSelector((state: any) => state.contact.user)
+
     const clear = () => {
         setViewMode(viewModeView)
+        setcontactData(initialcontactData)
     }
 
     const openSuccess = (message: string) => {
@@ -46,7 +49,6 @@ const CreatecontactData = () => {
     }
 
     const ValidateCampaign = () => {
-
         return ""
     }
 
@@ -59,12 +61,20 @@ const CreatecontactData = () => {
 
         // }
         if (viewMode === viewModeNew) {
-            dispatch(contact(contactData))
+            dispatch(addContact(contactData))
         }
         else if (viewMode === viewModeUpdate) {
-
+            dispatch(updateContact(contactData, singleContact?._id))
         }
     }
+
+    useEffect(() => {
+        if (singleContact) {
+            setViewMode(viewModeEdit)
+            setcontactData(singleContact)
+        }
+    }, [singleContact])
+
     return (
         <Grid container spacing={2}>
             {/* <SuccessFailureAlert
@@ -88,7 +98,8 @@ const CreatecontactData = () => {
                     style={{ fontSize: 10, marginRight: 10 }}
                     size='small' color="error"
                     variant="contained"
-                    disabled={viewMode === viewModeView || viewMode === viewModeEdit || viewMode === viewModeNew}
+                    onClick={() => setViewMode(viewModeUpdate)}
+                    disabled={viewMode !== viewModeEdit}
                 >
                     Edit
                 </Button>
@@ -122,7 +133,7 @@ const CreatecontactData = () => {
                                 <Typography textAlign='center' fontWeight='bold' style={{ textDecoration: 'underline' }}>Contact Form </Typography>
                             </Box>
                         </Grid>
-                        <Grid item xs={10} md={10} lg={4}>
+                        <Grid item xs={12} md={12} lg={4}>
                             <TextField
                                 value={contactData?.name}
                                 onChange={(e) =>
@@ -132,7 +143,7 @@ const CreatecontactData = () => {
                                 size='small' fullWidth id="outlined-basic" label="Name" variant="outlined"
                             />
                         </Grid>
-                        <Grid item xs={10} md={10} lg={4}>
+                        <Grid item xs={12} md={12} lg={4}>
                             <TextField
                                 value={contactData?.phone}
                                 onChange={(e) =>
@@ -142,7 +153,7 @@ const CreatecontactData = () => {
                                 size='small' fullWidth id="outlined-basic" label="Phone" variant="outlined" type='number'
                             />
                         </Grid>
-                        <Grid item xs={10} md={10} lg={4}>
+                        <Grid item xs={12} md={12} lg={4}>
                             <TextField
                                 value={contactData?.email}
                                 onChange={(e) =>
