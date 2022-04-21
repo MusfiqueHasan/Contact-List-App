@@ -29,6 +29,7 @@ const CreatecontactData = () => {
 
     const dispatch = useDispatch()
     const singleContact = useSelector((state: any) => state.contact.user)
+    console.log(singleContact)
 
     const clear = () => {
         setViewMode(viewModeView)
@@ -61,21 +62,28 @@ const CreatecontactData = () => {
 
         // }
         if (viewMode === viewModeNew) {
+            console.log('new')
             dispatch(addContact(contactData))
         }
         else if (viewMode === viewModeUpdate) {
+            console.log('edit')
             dispatch(updateContact(contactData, singleContact?._id))
         }
     }
 
     useEffect(() => {
+
         if (singleContact) {
             setViewMode(viewModeEdit)
             setcontactData(singleContact)
-            dispatch(updateStateOfSingleContact(null))
         }
 
     }, [singleContact])
+
+    useEffect(() => {
+        setViewMode(viewModeView)
+        dispatch(updateStateOfSingleContact(null))
+    }, [])
 
 
     return (
