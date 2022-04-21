@@ -4,6 +4,7 @@ export enum contactTypes {
   DELETE_CONTACT = "delete_contact",
   GET_SINGLE_CONTACT = "get_single_contact",
   UPDATE_CONTACT = "update_contact",
+  UPDATE_STATE_CONTACT = "update_state_contact",
 }
 export interface createContactType {
   type: contactTypes.CREATE_CONTACT;
@@ -17,6 +18,10 @@ export interface getSingleContactType {
   type: contactTypes.GET_SINGLE_CONTACT;
   payload: IContact;
 }
+export interface updateStateContactType {
+  type: contactTypes.UPDATE_STATE_CONTACT;
+  payload: IContactStateUpdate;
+}
 export interface deleteContactType {
   type: contactTypes.DELETE_CONTACT;
 }
@@ -25,9 +30,10 @@ export interface updateSingleContactType {
   payload: IContact[];
 }
 
+export interface IContactStateUpdate { }
 export interface IContactState {
   users: IContact[];
-  user: IContact ;
+  user: IContact | null;
   loading: boolean
 }
 
@@ -37,5 +43,6 @@ export type contactType =
   | deleteContactType
   | getSingleContactType
   | updateSingleContactType
+  | updateStateContactType
 
 

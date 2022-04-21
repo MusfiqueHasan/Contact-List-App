@@ -2,8 +2,6 @@ import { Dispatch } from "react";
 import { createContact, deleteSingleContact, getAllContact, getSingleContact, updateSingleContact } from "../../APIService/Api";
 import { contactType, contactTypes } from "../types";
 
-
-
 export const getContact: any = () => {
     return (dispatch: Dispatch<contactType>) => {
         getAllContact()
@@ -39,13 +37,18 @@ export const singleContact: any = (id: string) => {
         getSingleContact(id)
             .then((res) => {
                 if (res[0]) {
-                    
+
                     dispatch({ type: contactTypes.GET_SINGLE_CONTACT, payload: res[1] })
 
                 } else {
 
                 }
             })
+    }
+};
+export const updateStateOfSingleContact: any = (payload: any) => {
+    return (dispatch: Dispatch<contactType>) => {
+        dispatch({ type: contactTypes.UPDATE_STATE_CONTACT, payload: payload })
     }
 };
 export const deleteContact: any = (id: string) => {

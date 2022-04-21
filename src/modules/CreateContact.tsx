@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact, updateContact } from '../redux/actions/contactAction';
+import { addContact, updateContact, updateStateOfSingleContact } from '../redux/actions/contactAction';
 
 const viewModeView = "VIEW"
 const viewModeNew = "NEW"
@@ -72,8 +72,11 @@ const CreatecontactData = () => {
         if (singleContact) {
             setViewMode(viewModeEdit)
             setcontactData(singleContact)
+            dispatch(updateStateOfSingleContact(null))
         }
+
     }, [singleContact])
+
 
     return (
         <Grid container spacing={2}>

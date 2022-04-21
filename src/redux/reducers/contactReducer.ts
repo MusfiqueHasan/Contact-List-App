@@ -2,7 +2,7 @@ import { contactType, contactTypes, IContactState } from "../types";
 
 const initState: IContactState = {
     users: [],
-    user: {} as IContact,
+    user: {} as IContact | null,
     loading: true,
 };
 
@@ -11,6 +11,7 @@ function contactReducer(state: IContactState = initState, action: contactType) {
         case contactTypes.GET_CONTACT:
             return { ...state, users: action.payload, loading: false };
         case contactTypes.GET_SINGLE_CONTACT:
+        case contactTypes.UPDATE_STATE_CONTACT:
             return { ...state, user: action.payload, loading: false };
         case contactTypes.CREATE_CONTACT:
         case contactTypes.DELETE_CONTACT:
